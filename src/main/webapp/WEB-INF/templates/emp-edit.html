@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/emp}" method="post">
+    <input type="hidden" name="_method" value="put">
+    <input type="hidden" name="pageNo" th:value="${pageNo}">
+    <input type="hidden" value="empId" th:value="${emp.empId}">
+
+    姓名：<input type="hidden" name="empId" th:value="${emp.empId}"><br/>
+    工资：<input type="hidden" value="empSalary" th:value="${emp.empSalary}"><br/>
+    <button type="submit">更新</button>
+</form>
+</body>
+</html>

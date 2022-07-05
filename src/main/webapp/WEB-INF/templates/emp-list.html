@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style type="text/css">
+    table{
+      border-collapse: collapse;
+      margin: 0px auto 0px auto;
+    }
+    table th,td {
+      border: 1px solid black;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<table>
+  <tr>
+    <td>ID</td>
+    <td>empName</td>
+    <td>empSalary</td>
+  </tr>
+  <tbody th:if="${#lists.isEmpty(empList)}">
+  <tr>
+    <td colspan="3">抱歉，没有查询到数据！</td>
+  </tr>
+  </tbody>
+  <tbody th:if="${not #lists.isEmpty(empList)}">
+  <tr th:each="emp:${empList}">
+    <td th:text="${emp.empId}">这里显示员工ID</td>
+    <td th:text="${emp.empName}">这里显示员工姓名</td>
+    <td th:text="${emp.empSalary}">这里显示员工工资</td>
+  </tr>
+  </tbody>
+</table>
+
+
+<a th:href="@{/}">回首页</a>
+</body>
+</html>

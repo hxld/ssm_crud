@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+      table{
+        border-collapse: collapse;
+        margin: 0px auto 0px auto;
+      }
+      table th,td {
+        border: 1px solid black;
+        text-align: center;
+      }
+    </style>
+</head>
+<body>
+<table>
+  <tr>
+    <td>ID</td>
+    <td>empName</td>
+    <td>empSalary</td>
+    <td>删除</td>
+    <td>更新</td>
+  </tr>
+  <tbody th:if="${#lists.isEmpty(pageInfo.list)}">
+    <tr>
+      <td colspan="3">抱歉，没有查询到数据！</td>
+    </tr>
+  </tbody>
+  <tbody th:if="${not #lists.isEmpty(pageInfo.list)}">
+  <tr th:each="emp:${pageInfo.list}">
+    <td th:text="${emp.empId}">这里显示员工ID</td>
+    <td th:text="${emp.empName}">这里显示员工姓名</td>
+    <td th:text="${emp.empSalary}">这里显示员工工资</td>
+<!--设置删除超链接并绑定事件-->
+    <td>
+      <a onclick="convertMethod(this,event)"
+         th:href="@{/emp/}+${emp.empId}+'/'+${pageInfo.pageNum}">删除</a>
+    </td>
+
+    <td>
+      <a th:href="@{/emp/}+${emp.empId}+'/'+${pageInfo.pageNum}">更新</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <!--判断是否有上一页-->
+      <span th:if="${pageInfo.hasPreviousPage}">
+        <a th:href="@{/get/page/1}">首页</a>
+        <!-- 不能是@{/get/page/prePage}，如果这样写就变成路径了。-->
+      <a th:href="@{/get/page/}+${pageInfo.prePage}">上一页</a>
+      </span>
+
+
+      <!--循环页码，判断是否是当前页[1]-->
+      <span th:each="navigator:${pageInfo.navigatepageNums}">
+        <!--如果不是，显示可跳转的超链接-->
+        <a th:if="${navigator != pageInfo.pageNum}"
+           th:href="@{/get/page/}+${navigator}"
+           th:text="'['+${navigator}+']'"></a>
+        <!--如果是当前页，显示页码-->
+        <span th:if="${navigator == pageInfo.pageNum}"
+              th:text="'['+${navigator}+']'">
+        </span>
+      </span>
+
+      <!--判读是否有下一页-->
+      <span th:if="${pageInfo.hasNextPage}">
+        <a th:href="@{/get/page/}+${pageInfo.nextPage}">下一页</a>
+        <a th:href="@{/get/page/}+${pageInfo.pages}">最后一页</a>
+      </span>
+
+      <span th:text="${pageInfo.pageNum} + '/' +${pageInfo.pages}"></span>
+
+    </td>
+  </tr>
+  </tbody>
+  <tr>
+    <td colspan="3">
+      <!--绑定值改变事件响应函数-->
+      <input id="jumpToPageNumInput" type="text" name="jumpToPageNum" placeholder="请输入你想直接跳转的页码"/>
+    </td>
+  </tr>
+</table>
+<!--编辑点击响应函数-->
+<script type="text/javascript">
+  // 获取页码文本框的元素对象
+  var jumpPageNumEle = document.getElementById("jumpToPageNumInput");
+  // 给页码文本框绑定至改变响应函数
+  jumpPageNumEle.onchange = function () {
+    // 触发值改变响应函数后，获取当前文本框中用户输入的值
+    var targetNum = this.value;
+    // 检测用户输入的数据是否是数字
+    if(isNaN(targetNum)){
+      // 如果不是数字则恢复文本框
+      this.value="";
+      // 当前函数结束
+      return ;
+    }
+
+    //如果用户输入合法，则跳转页面
+    //[[@{/get/page/}]] 表示解析thymeleaf表达式
+    window.location.href="[[@{/get/page/}]]" + targetNum;
+  }
+</script>
+
+
+<!--提供一个空表单，实现请求转换-->
+<!--id作用是通过js代码获取表单对象，rest风格要求将post请求，以_method为参数名，delete为参数值转换请求-->
+<form id="convertFrom" method="post" >
+  <input type="hidden" name="_method" value="delete">
+</form>
+
+<!--给每一个删除超链接绑定单击响应函数-->
+<script type="text/javascript">
+  function convertMethod(anchorElement,event) {
+
+    //获取超链接原本要访问的目标地址
+     var targetURL =anchorElement.href;
+    //获取表单对象
+     var  formEle = document.getElementById("convertFrom");
+
+     //把超链接要访问的地址设置给表单action属性
+    formEle.action = targetURL;
+
+    //提交表单
+    formEle.submit();
+
+    //取消控件的默认行为，让超链接不会跳转
+    event.preventDefault();
+  }
+</script>
+
+
+
+<a th:href="@{/}">首页</a><br>
+<a th:href="@{/emp/add}">添加数据</a>
+
+</body>
+</html>

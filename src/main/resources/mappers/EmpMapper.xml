@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.atguigu.mapper.EmpMapper">
+    <!--List<Emp>  getAllEmp();-->
+<select id="getAllEmp" resultType="Emp">
+    select * from t_emp
+</select>
+
+<!--    void deleteEmpByPrimaryId(Integer empId);-->
+<delete id="deleteEmpByPrimaryId">
+    delete from t_emp where  emp_id = #{empId}
+</delete>
+
+<!--     void insert(Emp emp);-->
+    <insert id="insert">
+        insert into t_emp values(null,#{empName},#{empSalary})
+    </insert>
+
+<!--    Emp selectedEmpByPrimaryId(Integer empId);-->
+<select id="selectedEmpByPrimaryId" resultType="emp">
+    select emp_id,emp_name,emp_salary from t_emp where emp_id=#{empId}
+</select>
+<!--    void doUpdate(Emp emp);-->
+<update id="doUpdate">
+    update  t_emp  set emp_name=#{empName},emp_salary=#{empSalary} where emp_id=#{empId}
+</update>
+</mapper>
+

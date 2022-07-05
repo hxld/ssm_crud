@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        table{
+            border-collapse: collapse;
+            margin: 0px auto 0px auto;
+        }
+        table th,td {
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<form  th:action="@{/emp}" method="post">
+    姓名：<input type="text" name="empName"/><br/>
+    工资：<input type="text" name="empSalary"/><br/>
+    <button type="submit">保存</button>
+</form>
+
+</body>
+</html>
